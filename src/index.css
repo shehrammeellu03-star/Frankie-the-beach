@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+:root {
+  --brand-blue: #0580FF;
+  --brand-blue-hover: #006ee0;
+  --brand-blue-dark: #004fb3;
+  --brand-blue-deep: #003680;
+  --brand-gold-light: #ECD87A;
+  --brand-gold-mid: #D1A03F;
+  --brand-gold-dark: #8C6F2B;
+  --brand-black: #000000;
+  --brand-white: #EEEFE9;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #000000;
+    background-color: #EEEFE9;
+    overflow-x: hidden;
+  }
+
+  img {
+    content-visibility: auto;
+  }
+}
+
+/* Metallic Brand Gold Gradient */
+.bg-brand-gold {
+  background: linear-gradient(180deg, #ECD87A 0%, #D1A03F 50%, #8C6F2B 100%);
+}
+
+.bg-brand-gold:hover {
+  filter: brightness(1.05);
+}
+
+.text-brand-gold-gradient {
+  background: linear-gradient(180deg, #ECD87A 0%, #D1A03F 50%, #8C6F2B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-brand-gold {
+  border-color: #D1A03F;
+}
+
+.font-script {
+  font-family: 'Pacifico', 'Caveat', cursive;
+}
+
+.font-hand {
+  font-family: 'Caveat', cursive;
+}
+
+.font-impact {
+  font-family: 'Anton', 'Montserrat', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-heading {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Custom Polaroid Card Styling with GPU Acceleration */
+.polaroid-frame {
+  background: #ffffff;
+  padding: 10px 10px 24px 10px;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35), 0 8px 16px -6px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+}
+
+.polaroid-frame:hover {
+  box-shadow: 0 25px 55px -10px rgba(0, 0, 0, 0.45);
+}
+
+/* Circular Badge Stamp with optimized transform */
+.stamp-badge {
+  box-shadow: 0 10px 25px rgba(5, 128, 255, 0.3);
+  animation: floatSubtle 6s ease-in-out infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@keyframes floatSubtle {
+  0% {
+    transform: rotate(-6deg) translateY(0px) translateZ(0);
+  }
+  100% {
+    transform: rotate(-3deg) translateY(-4px) translateZ(0);
+  }
+}
+
+/* Off-screen section optimization for high-framerate scrolling */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #EEEFE9;
+}
+::-webkit-scrollbar-thumb {
+  background: #0580FF;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #006ee0;
+}
