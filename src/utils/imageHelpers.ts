@@ -42,6 +42,37 @@ export async function processUploadedFile(
 
     reader.onload = () => {
       const rawDataUrl = reader.result as string;
+
+      // If video file, return raw dataUrl directly so videos can be stored and previewed
+      if (file.type.startsWith('video/')) {
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.onloadedmetadata = () => {
+          resolve({
+            dataUrl: rawDataUrl,
+            fileSize: formatBytes(file.size),
+            dimensions: `${video.videoWidth || 1280} × ${video.videoHeight || 720}`,
+            width: video.videoWidth || 1280,
+            height: video.videoHeight || 720,
+            originalSize: file.size,
+            compressedSize: file.size,
+          });
+        };
+        video.onerror = () => {
+          resolve({
+            dataUrl: rawDataUrl,
+            fileSize: formatBytes(file.size),
+            dimensions: 'Video MP4',
+            width: 1280,
+            height: 720,
+            originalSize: file.size,
+            compressedSize: file.size,
+          });
+        };
+        video.src = rawDataUrl;
+        return;
+      }
+
       const img = new Image();
 
       img.onerror = () => {

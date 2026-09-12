@@ -4,6 +4,7 @@ import { Hero } from '../components/Hero';
 import { QuickInfoBar } from '../components/QuickInfoBar';
 import { ChefsFavorites } from '../components/ChefsFavorites';
 import { WhatPeopleSay } from '../components/WhatPeopleSay';
+import { CateringShowcase } from '../components/CateringShowcase';
 import {
   Utensils,
   Calendar,
@@ -346,6 +347,9 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* 6. Beach Catering & Private Hire Video Showcase */}
+      <CateringShowcase />
 
       {/* Mid-Page Showcase: Children's Beach Rides & Attractions Official TripAdvisor Banner */}
       <TripAdvisorAttractionsBanner className="!my-0" />

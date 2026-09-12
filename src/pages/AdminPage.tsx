@@ -565,7 +565,7 @@ export const AdminPage: React.FC = () => {
               >
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*,video/mp4,video/webm,video/quicktime"
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
                       handleFileSelect(e.target.files[0]);
@@ -579,19 +579,19 @@ export const AdminPage: React.FC = () => {
                 </div>
 
                 <h3 className="font-heading font-black text-xl text-[#000000] uppercase mb-1 pointer-events-none">
-                  Drag &amp; Drop Any Image Here
+                  Drag &amp; Drop Any Image or Video Here
                 </h3>
                 <p className="text-xs sm:text-sm text-[#526b74] mb-4 pointer-events-none">
-                  Or click anywhere to select from your phone gallery or files
+                  Or click anywhere to select photos or MP4 video from your phone or files
                 </p>
 
                 <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0580FF] text-white text-xs font-bold rounded-xl shadow hover:bg-[#005a6c] pointer-events-none">
                   <Upload className="w-3.5 h-3.5" />
-                  <span>Choose Photo File</span>
+                  <span>Choose Photo or Video File</span>
                 </div>
 
                 <p className="text-[11px] text-gray-400 mt-4 pointer-events-none">
-                  Supports JPG, PNG, WEBP, GIF, SVG • You can also copy any image and press <kbd className="px-1.5 py-0.5 bg-gray-100 border border-gray-300 rounded text-gray-700 font-mono">Ctrl+V</kbd>
+                  Supports JPG, PNG, WEBP, GIF, SVG • MP4 &amp; WebM Video for Hero Background
                 </p>
               </div>
 
@@ -630,11 +630,23 @@ export const AdminPage: React.FC = () => {
                   Upload Settings &amp; Destination
                 </h3>
 
-                {/* Preview Selected Image */}
+                {/* Preview Selected Media */}
                 {previewUrl ? (
                   <div className="mb-6">
                     <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 mb-2 group">
-                      <img src={previewUrl} alt="Selected preview" className="w-full h-full object-cover" />
+                      {selectedFile?.type.startsWith('video/') || previewUrl.startsWith('data:video/') || previewUrl.endsWith('.mp4') ? (
+                        <video
+                          src={previewUrl}
+                          controls
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img src={previewUrl} alt="Selected preview" className="w-full h-full object-cover" />
+                      )}
                       <button
                         onClick={() => {
                           setSelectedFile(null);

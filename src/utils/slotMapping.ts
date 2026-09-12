@@ -132,6 +132,20 @@ export const UNIFIED_SLOTS: UnifiedSlot[] = [
     aliases: ['heroBg', 'site:heroBg', 'heroBeachBg', 'site:heroBeachBg'],
   },
   {
+    key: 'heroVideo',
+    type: 'site',
+    label: 'Homepage Hero Video Background (MP4 / WebM)',
+    location: 'Homepage Top Hero Video Background',
+    aliases: ['heroVideo', 'site:heroVideo', 'videoBg', 'site:videoBg'],
+  },
+  {
+    key: 'cateringVideo',
+    type: 'site',
+    label: 'Beach Catering & Events Video (MP4 / WebM)',
+    location: 'Homepage Catering & Private Hire Showcase Section',
+    aliases: ['cateringVideo', 'site:cateringVideo'],
+  },
+  {
     key: 'heroBurger',
     type: 'site',
     label: 'Homepage Hero Main Cheeseburger Polaroid',
@@ -214,13 +228,6 @@ export const UNIFIED_SLOTS: UnifiedSlot[] = [
     label: 'Beach Electric Scooters Track',
     location: 'TripAdvisor Rides Section',
     aliases: ['childrenScooter', 'site:childrenScooter'],
-  },
-  {
-    key: 'sunsetBeach',
-    type: 'site',
-    label: 'Golden Hour Sunset Beach Photo Card',
-    location: 'Homepage Reviews Section (What People Say)',
-    aliases: ['sunsetBeach', 'site:sunsetBeach'],
   },
 
   // ==========================================

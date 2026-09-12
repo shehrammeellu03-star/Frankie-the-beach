@@ -55,7 +55,6 @@ export default function App() {
   useEffect(() => {
     // Preload critical authentic photography immediately for instantaneous first-frame appearance
     preloadImages([
-      ASSETS.heroBeachBg,
       ASSETS.kiosk,
       ASSETS.barSelfie,
       ASSETS.heroBurger,

@@ -12,11 +12,13 @@ export const CLIENT_IMAGES = {
   kioskExterior: '/childern_2.webp',
   
   // Homepage Hero Elements
-  heroBg: '/hero-bg.webp',
+  heroBg: '',
+  heroVideo: '/hero-video.mp4',
+  cateringVideo: '/catering-video.mp4',
   heroBurger: '/food-1.webp',
   heroIceCream: '/frankies_ice_cream_cone.webp',
   heroDrink: '/frankies_cheesy_fries_slushy.webp',
-  sunsetBeach: '/hero-bg.webp',
+  sunsetBeach: '',
   
   // Food Items
   food1Burger: '/food-1.webp',
@@ -68,8 +70,10 @@ export const ASSETS = {
   barSelfie: '/genuine-bar-selfie.png',
   beachPatio: '/childern_2.webp',
   tropicalDrink: '/frankies_cheesy_fries_slushy.webp',
-  sunsetBeach: '/hero-bg.webp',
-  heroBeachBg: '/hero-bg.webp',
+  sunsetBeach: '',
+  heroBeachBg: '',
+  heroVideo: '/hero-video.mp4',
+  cateringVideo: '/catering-video.mp4',
 
   // Food Images
   heroBurger: '/food-1.webp',

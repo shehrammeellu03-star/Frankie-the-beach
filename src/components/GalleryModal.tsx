@@ -11,10 +11,10 @@ interface GalleryModalProps {
 export const GalleryModal: React.FC<GalleryModalProps> = ({ isOpen, onClose }) => {
   const images = [
     {
-      src: ASSETS.sunsetBeach,
-      slotKey: 'site:sunsetBeach',
-      title: 'Ramsgate Golden Hour & Sunset Ocean',
-      desc: 'The evening view from our oceanfront dining deck as the sun sets over Ramsgate Beach.',
+      src: ASSETS.barSelfie,
+      slotKey: 'site:barSelfie',
+      title: "Frankie's Beach Bar Team & Welcoming Service",
+      desc: "Inside Frankie's on Ramsgate Main Sands with friendly smiles, cold refreshments, and beach treats.",
     },
     {
       src: ASSETS.heroBurger,

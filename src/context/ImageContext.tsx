@@ -206,7 +206,7 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     }
     // Also include extra homepage & attraction slot keys
-    const extraKeys = ['heroBg', 'heroBurger', 'heroDrink', 'sunsetBeach', 'childrenScooter'];
+    const extraKeys = ['heroBg', 'heroVideo', 'cateringVideo', 'heroBurger', 'heroDrink', 'childrenScooter'];
     for (const key of extraKeys) {
       const override = resolveImageOverride(key, slotOverrides);
       if (override) {

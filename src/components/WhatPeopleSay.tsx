@@ -1,19 +1,17 @@
 import React from 'react';
-import { Star, ArrowRight, Sparkles } from 'lucide-react';
-import { CUSTOMER_REVIEWS, ASSETS } from '../data/restaurantData';
-import { ClientImage } from './ClientImage';
+import { Star, ArrowRight } from 'lucide-react';
+import { CUSTOMER_REVIEWS } from '../data/restaurantData';
 
 interface WhatPeopleSayProps {
   onViewAllReviews: () => void;
-  onOpenGallery: () => void;
+  onOpenGallery?: () => void;
 }
 
 export const WhatPeopleSay: React.FC<WhatPeopleSayProps> = ({
   onViewAllReviews,
-  onOpenGallery,
 }) => {
-  // We showcase the first 3 reviews + the sunset image card
-  const topReviews = CUSTOMER_REVIEWS.slice(0, 3);
+  // We showcase the top 4 genuine Google customer reviews
+  const topReviews = CUSTOMER_REVIEWS.slice(0, 4);
 
   return (
     <section className="bg-[#EEEFE9] py-12 sm:py-16 border-t border-[#e2e5dc]" id="reviews">
@@ -60,10 +58,8 @@ export const WhatPeopleSay: React.FC<WhatPeopleSayProps> = ({
           </button>
         </div>
 
-        {/* 4 Columns: 3 Review Cards + 1 Sunset Photo Card */}
+        {/* 4 Columns: 4 Authentic Customer Review Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          
-          {/* Top 3 Reviews */}
           {topReviews.map((review) => (
             <div
               key={review.id}
@@ -113,29 +109,6 @@ export const WhatPeopleSay: React.FC<WhatPeopleSayProps> = ({
               </div>
             </div>
           ))}
-
-          {/* 4th Card: Sunset Beach Photography Card */}
-          <div
-            onClick={onOpenGallery}
-            className="group relative rounded-2xl overflow-hidden shadow-[0_4px_18px_rgba(0,0,0,0.08)] border border-[#e2e5dc] cursor-pointer min-h-[220px] bg-[#1a2e35]"
-            title="Click to view beachfront sunset gallery"
-          >
-            <ClientImage
-              src={ASSETS.sunsetBeach}
-              slotKey="site:sunsetBeach"
-              fallbackSrc={ASSETS.sunsetBeach}
-              alt="Golden beachfront ocean sunset with silhouettes of palm trees"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-            {/* Subtle Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-              <span className="text-white text-xs font-bold flex items-center gap-1.5 drop-shadow-md">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                Golden Hour at Frankie's
-              </span>
-            </div>
-          </div>
-
         </div>
 
       </div>

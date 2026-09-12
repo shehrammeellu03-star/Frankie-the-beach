@@ -1,5 +1,5 @@
-import React from 'react';
-import { Utensils, MapPin, Palmtree } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Utensils, MapPin, Palmtree, Volume2, VolumeX, Play, Pause, Video } from 'lucide-react';
 import { ASSETS } from '../data/restaurantData';
 import { ClientImage } from './ClientImage';
 import { useImages } from '../context/ImageContext';
@@ -10,7 +10,51 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onExploreMenu, onContact }) => {
-  const { clientImages } = useImages();
+  const { clientImages, slotOverrides } = useImages();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [videoError, setVideoError] = useState(false);
+
+  const heroVideoSrc =
+    slotOverrides['site:heroVideo'] ||
+    slotOverrides['heroVideo'] ||
+    clientImages.heroVideo ||
+    ASSETS.heroVideo ||
+    '/hero-video.mp4';
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Handle mobile autoplay restriction
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          setIsMuted(true);
+          videoRef.current.play().catch(() => {});
+        }
+      });
+    }
+  }, [heroVideoSrc]);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 mt-1 sm:mt-2">
@@ -18,24 +62,74 @@ export const Hero: React.FC<HeroProps> = ({ onExploreMenu, onContact }) => {
         id="home"
         className="relative text-white pt-8 sm:pt-14 pb-24 sm:pb-36 overflow-hidden bg-[#0580FF] rounded-3xl shadow-lg border border-white/10"
       >
-      {/* 1. Full Beach Ocean Background Image */}
-      <div className="absolute inset-0 z-0">
-        {(clientImages.heroBg || ASSETS.heroBeachBg) ? (
-          <ClientImage
-            src={clientImages.heroBg || ASSETS.heroBeachBg}
-            slotKey="site:heroBg"
-            fallbackSrc={ASSETS.heroBeachBg}
-            alt="Tropical turquoise beach and ocean"
-            className="w-full h-full object-cover object-center"
-            priority
+      {/* 1. Full Beach Ocean Background (Video with Image Poster Fallback) */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Background Image Poster (Immediate, zero layout shift, seamless fallback) */}
+        <div className="absolute inset-0 z-0">
+          {clientImages.heroBg ? (
+            <ClientImage
+              src={clientImages.heroBg}
+              slotKey="site:heroBg"
+              fallbackSrc=""
+              alt="Frankie's Beach"
+              className="w-full h-full object-cover object-center"
+              priority
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-[#0580FF] via-[#004fb3] to-[#002d66]" />
+          )}
+        </div>
+
+        {/* Ambient Hero Video Loop */}
+        {!videoError && heroVideoSrc && (
+          <video
+            ref={videoRef}
+            src={heroVideoSrc}
+            autoPlay
+            loop
+            muted={isMuted}
+            playsInline
+            onLoadedData={() => setIsVideoLoaded(true)}
+            onError={() => setVideoError(true)}
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 z-[1] ${
+              isVideoLoaded ? 'opacity-95' : 'opacity-0'
+            }`}
           />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#0580FF] via-[#004fb3] to-[#003680]" />
         )}
-        {/* Vibrant Turquoise Sea Color Grading Overlay to match exact turquoise tone */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#006ee0]/85 via-[#0580FF]/70 to-[#0580FF]/65 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#004fb3]/60 via-transparent to-[#003680]/80" />
+
+        {/* Cinematic Ocean & Seaside Color Grading Overlay for contrast and readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#004fb3]/80 via-[#0580FF]/65 to-[#003680]/75 mix-blend-multiply z-[2]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#003680]/60 via-transparent to-[#002855]/75 z-[2]" />
       </div>
+
+      {/* Live Video Control Badge */}
+      {!videoError && isVideoLoaded && (
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex items-center gap-2 bg-black/40 hover:bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 transition-all text-xs font-medium text-white shadow-lg">
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="hidden sm:inline uppercase tracking-wider text-[10px] font-bold text-white/90">
+            Beach Video
+          </span>
+          <button
+            onClick={togglePlay}
+            className="p-1 hover:text-[#ECD87A] transition-colors cursor-pointer"
+            title={isPlaying ? 'Pause Background Video' : 'Play Background Video'}
+            aria-label={isPlaying ? 'Pause Background Video' : 'Play Background Video'}
+          >
+            {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+          </button>
+          <button
+            onClick={toggleMute}
+            className="p-1 hover:text-[#ECD87A] transition-colors cursor-pointer"
+            title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+            aria-label={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+          >
+            {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+          </button>
+        </div>
+      )}
 
       {/* 2. Realistic Tropical Palm Tree Silhouettes & Sun Flares */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0 opacity-40">

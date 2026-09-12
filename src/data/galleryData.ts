@@ -19,14 +19,6 @@ export const DEFAULT_GALLERY_ITEMS: GalleryItem[] = [
     category: 'kiosk-team',
     desc: "Outdoor beach dining area, seaside seating, Ramsgate sand, and the family fun carousel right beside Frankie's.",
   },
-  {
-    id: 'g-hero-panorama',
-    src: CLIENT_IMAGES.heroBg,
-    fallbackSrc: CLIENT_IMAGES.heroBg,
-    title: "Ramsgate Beachfront & Golden Sunset Horizon",
-    category: 'kiosk-team',
-    desc: "Panoramic coastal sea view right in front of Frankie's on Ramsgate Beach, Kent.",
-  },
 
   // 2. Burgers & Hot Dogs
   {
