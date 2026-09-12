@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Utensils,
@@ -18,15 +18,40 @@ import { useImages } from '../context/ImageContext';
 import { ASSETS } from '../data/restaurantData';
 
 export const CateringShowcase: React.FC = () => {
-  const { clientImages } = useImages();
+  const { clientImages, slotOverrides } = useImages();
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [videoError, setVideoError] = useState(false);
 
-  // Video source: checks client custom upload first, then default
-  const videoSrc = clientImages.cateringVideo || ASSETS.cateringVideo || '/catering-video.mp4';
+  // Video source: checks slot overrides first, then client images, then assets, fallback to /catering-video.mp4
+  const videoSrc =
+    slotOverrides?.['site:cateringVideo'] ||
+    slotOverrides?.['cateringVideo'] ||
+    clientImages?.cateringVideo ||
+    ASSETS.cateringVideo ||
+    '/catering-video.mp4';
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => setIsPlaying(true)).catch(() => {
+          // Autoplay was prevented by browser policy; ensure muted and retry safely
+          if (videoRef.current) {
+            videoRef.current.muted = true;
+            setIsMuted(true);
+            videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {
+              setIsPlaying(false);
+            });
+          }
+        });
+      }
+    }
+  }, [videoSrc]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -100,15 +125,23 @@ export const CateringShowcase: React.FC = () => {
               
               {!videoError ? (
                 <video
+                  key={videoSrc}
                   ref={videoRef}
-                  src={videoSrc}
                   autoPlay
                   muted={isMuted}
                   loop
                   playsInline
-                  onError={() => setVideoError(true)}
+                  preload="auto"
+                  onError={() => {
+                    // Only trigger fallback if the video element has a fatal media error
+                    if (videoRef.current?.error) {
+                      setVideoError(true);
+                    }
+                  }}
                   className="w-full h-full object-cover"
-                />
+                >
+                  <source src={videoSrc} type="video/mp4" />
+                </video>
               ) : (
                 /* Fallback Image Poster if video is missing or still being loaded */
                 <div className="w-full h-full relative">
